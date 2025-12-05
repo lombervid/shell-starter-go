@@ -14,7 +14,14 @@ func repl() {
 		fmt.Fprintln(os.Stderr, "Error reading input:", err)
 		os.Exit(1)
 	}
-	fmt.Println(command[:len(command)-1] + ": command not found")
+
+	command = command[:len(command)-1]
+	switch command {
+	case "exit":
+		os.Exit(0)
+	default:
+		fmt.Println(command + ": command not found")
+	}
 }
 
 func main() {
