@@ -6,7 +6,7 @@ import (
 	"os"
 )
 
-func main() {
+func repl() {
 	fmt.Print("$ ")
 
 	command, err := bufio.NewReader(os.Stdin).ReadString('\n')
@@ -15,4 +15,10 @@ func main() {
 		os.Exit(1)
 	}
 	fmt.Println(command[:len(command)-1] + ": command not found")
+}
+
+func main() {
+	for {
+		repl()
+	}
 }
