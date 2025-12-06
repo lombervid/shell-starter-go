@@ -6,7 +6,7 @@ import (
 	"os"
 	"strings"
 
-	"github.com/lombervid/shell-starter-go/internal/builtin"
+	"github.com/lombervid/shell-starter-go/internal/commands"
 )
 
 func printPrompt() {
@@ -35,10 +35,10 @@ func parseCommand(input string) (cmd, args string) {
 func main() {
 	for {
 		cmd, args := parseCommand(readInput())
-		command, ok := builtin.Commands[cmd]
+		command, ok := commands.Builtin[cmd]
 
 		if !ok {
-			fmt.Println(cmd + ": command not found")
+			fmt.Fprintln(os.Stderr, cmd+": command not found")
 			continue
 		}
 
