@@ -5,10 +5,16 @@ import (
 	"fmt"
 	"os"
 	"strings"
+
+	"github.com/lombervid/shell-starter-go/internal/builtin"
 )
 
-func repl() {
+func printPrompt() {
 	fmt.Print("$ ")
+}
+
+func readInput() string {
+	printPrompt()
 
 	inputString, err := bufio.NewReader(os.Stdin).ReadString('\n')
 	if err != nil {
@@ -16,22 +22,26 @@ func repl() {
 		os.Exit(1)
 	}
 
-	inputString = strings.TrimSpace(inputString)
-	command, cmdArgs, _ := strings.Cut(inputString, " ")
-	cmdArgs = strings.TrimSpace(cmdArgs)
+	return strings.TrimSpace(inputString)
+}
 
-	switch command {
-	case "exit":
-		os.Exit(0)
-	case "echo":
-		fmt.Println(cmdArgs)
-	default:
-		fmt.Println(command + ": command not found")
-	}
+func parseCommand(input string) (cmd, args string) {
+	cmd, args, _ = strings.Cut(input, " ")
+	cmd = strings.TrimSpace(cmd)
+	args = strings.TrimSpace(args)
+	return
 }
 
 func main() {
 	for {
-		repl()
+		cmd, args := parseCommand(readInput())
+		command, ok := builtin.Commands[cmd]
+
+		if !ok {
+			fmt.Println(cmd + ": command not found")
+			continue
+		}
+
+		command.Execute(args)
 	}
 }
