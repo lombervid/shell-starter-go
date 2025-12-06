@@ -6,6 +6,6 @@ import (
 
 type echo struct{}
 
-func (c echo) Execute(args string) {
+func (c echo) Exec(args string) {
 	fmt.Println(args)
 }

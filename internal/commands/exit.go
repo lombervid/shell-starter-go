@@ -4,6 +4,6 @@ import "os"
 
 type exit struct{}
 
-func (c exit) Execute(args string) {
+func (c exit) Exec(args string) {
 	os.Exit(0)
 }

@@ -1,10 +1,10 @@
 package commands
 
-type command interface {
-	Execute(args string)
+type execer interface {
+	Exec(args string)
 }
 
-var Builtin = map[string]command{
+var Builtin = map[string]execer{
 	"exit": exit{},
 	"echo": echo{},
 	"type": typeCmd{},

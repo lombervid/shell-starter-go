@@ -7,7 +7,7 @@ import (
 
 type typeCmd struct{}
 
-func (c typeCmd) Execute(args string) {
+func (c typeCmd) Exec(args string) {
 	if _, ok := Builtin[args]; !ok {
 		fmt.Fprintln(os.Stderr, args+": not found")
 		return

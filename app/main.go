@@ -42,6 +42,6 @@ func main() {
 			continue
 		}
 
-		command.Execute(args)
+		command.Exec(args)
 	}
 }
