@@ -7,17 +7,19 @@ import (
 
 type typeCmd struct{}
 
-func (c typeCmd) Exec(args string) {
-	_, ok := Builtin[args]
-	if ok {
-		fmt.Println(args, "is a shell builtin")
-		return
-	}
+func (c typeCmd) Exec(args ...string) {
+	for _, arg := range args {
+		_, ok := Builtin[arg]
+		if ok {
+			fmt.Println(arg, "is a shell builtin")
+			continue
+		}
 
-	if exec, isExecutable := findExecutable(args); isExecutable {
-		fmt.Println(args, "is", exec.path)
-		return
-	}
+		if exec, isExecutable := FindExecutable(arg); isExecutable {
+			fmt.Println(arg, "is", exec.path)
+			continue
+		}
 
-	fmt.Fprintln(os.Stderr, args+": not found")
+		fmt.Fprintln(os.Stderr, arg+": not found")
+	}
 }

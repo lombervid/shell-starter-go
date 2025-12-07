@@ -8,7 +8,7 @@ import (
 )
 
 type execer interface {
-	Exec(args string)
+	Exec(args ...string)
 }
 
 type executable struct {
@@ -16,11 +16,16 @@ type executable struct {
 	path string
 }
 
-func (c executable) Exec(args string) {
-	exec.Command(c.path, args)
+func (c executable) Exec(args ...string) {
+	output, err := exec.Command(c.name, args...).Output()
+	if err != nil {
+		fmt.Fprintf(os.Stderr, "%v\n", err)
+		return
+	}
+	fmt.Printf("%s", output)
 }
 
-var pathDirs = []string{}
+var PathDirs = []string{}
 var Executables = make(map[string]executable)
 var Builtin = map[string]execer{
 	"exit": exit{},
@@ -30,15 +35,15 @@ var Builtin = map[string]execer{
 
 func init() {
 	path := os.Getenv("PATH")
-	pathDirs = strings.Split(path, ":")
+	PathDirs = strings.Split(path, ":")
 }
 
-func findExecutable(name string) (executable, bool) {
+func FindExecutable(name string) (executable, bool) {
 	if exec, ok := Executables[name]; ok {
 		return exec, true
 	}
 
-	for _, dir := range pathDirs {
+	for _, dir := range PathDirs {
 		if isExecutableIn(dir, name) {
 			exec := executable{
 				name: name,
