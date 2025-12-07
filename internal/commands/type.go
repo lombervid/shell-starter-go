@@ -8,9 +8,16 @@ import (
 type typeCmd struct{}
 
 func (c typeCmd) Exec(args string) {
-	if _, ok := Builtin[args]; !ok {
-		fmt.Fprintln(os.Stderr, args+": not found")
+	_, ok := Builtin[args]
+	if ok {
+		fmt.Println(args, "is a shell builtin")
 		return
 	}
-	fmt.Println(args, "is a shell builtin")
+
+	if exec, isExecutable := findExecutable(args); isExecutable {
+		fmt.Println(args, "is", exec.path)
+		return
+	}
+
+	fmt.Fprintln(os.Stderr, args+": not found")
 }
