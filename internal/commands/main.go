@@ -28,11 +28,11 @@ func (c executable) Exec(args ...string) {
 var PathDirs = []string{}
 var Executables = make(map[string]executable)
 var Builtin = map[string]execer{
-	"exit": exit{},
-	"echo": echo{},
-	"type": typeCmd{},
-	"pwd":  pwd{},
-	"cd":   cd{},
+	"exit": &exit{},
+	"echo": &echo{},
+	"type": &typeCmd{},
+	"pwd":  &pwd{},
+	"cd":   &cd{currentDirectory: os.Getenv("PWD")},
 }
 
 func init() {
