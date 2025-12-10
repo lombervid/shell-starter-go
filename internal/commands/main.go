@@ -32,6 +32,7 @@ var Builtin = map[string]execer{
 	"echo": echo{},
 	"type": typeCmd{},
 	"pwd":  pwd{},
+	"cd":   cd{},
 }
 
 func init() {
