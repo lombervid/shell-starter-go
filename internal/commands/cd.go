@@ -79,8 +79,7 @@ func (c *cd) resolvePath(path string) (newPath string, ok bool) {
 		}
 	}
 
-	newPath = strings.ReplaceAll(newPath, "//", "/")
-
 	ok = true
+	newPath = strings.ReplaceAll(newPath, "//", "/") // clean path
 	return
 }
