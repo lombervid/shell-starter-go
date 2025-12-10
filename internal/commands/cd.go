@@ -14,16 +14,26 @@ func (c cd) Exec(args ...string) {
 	}
 
 	path := args[0]
+	ok := c.chdir(path)
+
+	if ok == false {
+		fmt.Fprintf(os.Stderr, "cd: %s: No such file or directory\n", path)
+	}
+}
+
+func (c *cd) chdir(path string) bool {
 	if path == "" {
 		homeDir, err := os.UserHomeDir()
 		if err != nil {
-			fmt.Fprintln(os.Stderr, "cd: : No such file or directory")
+			return false
 		}
 		path = homeDir
 	}
 
 	err := os.Chdir(path)
 	if err != nil {
-		fmt.Fprintf(os.Stderr, "cd: %s: No such file or directory\n", path)
+		return false
 	}
+
+	return true
 }
